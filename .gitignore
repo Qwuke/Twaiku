@@ -17,5 +17,5 @@ target/
 
 *.class
 Credentials.java
-//#hibernate
-//hibernate.cfg.xml
+#hibernate
+hibernate.cfg.xml
