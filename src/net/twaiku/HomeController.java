@@ -1,69 +1,56 @@
 package net.twaiku;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
+
 @Controller
 public class HomeController {
+	public int tweetCount;
 
-	@RequestMapping({"/index","/"})
+	@RequestMapping({ "/index", "/" })
 	public String index() {
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey("conskey")
-                .setOAuthConsumerSecret("conssecret")
-                .setOAuthAccessToken("acckey")
-                .setOAuthAccessTokenSecret("accsecret");
+		configurationBuilder.setOAuthConsumerKey(Credentials.CLIENT_ID)
+				.setOAuthConsumerSecret(Credentials.CLIENT_SECRET).setOAuthAccessToken(Credentials.AccessToken_ID)
+				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 		TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
-		//TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+		// TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 		StatusListener listener = new StatusListener() {
 			@Override
 			public void onStatus(Status status) {
-				System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+				
+				if (status.getLang().toString().equals("en")) {
+					tweetCount++;
+					System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText() + " - GETID:"
+							+ status.getId() + " TweetCount" + tweetCount );
+					//This errors with NullPointerException
+					//System.out.println(status.getRateLimitStatus());
+					
+				}
 			}
 
 			@Override
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
+				// System.out.println("Got a status deletion notice id:" +
+				// statusDeletionNotice.getStatusId());
 			}
 
 			@Override
 			public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-				System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
+				// System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
 			}
 
 			@Override
 			public void onScrubGeo(long userId, long upToStatusId) {
-				System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
+				// System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:"
+				// + upToStatusId);
 			}
 
 			@Override
 			public void onStallWarning(StallWarning warning) {
-				System.out.println("Got stall warning:" + warning);
+				// System.out.println("Got stall warning:" + warning);
 			}
 
 			@Override
@@ -73,6 +60,9 @@ public class HomeController {
 		};
 		twitterStream.addListener(listener);
 		twitterStream.sample();
+		// FilterQuery fq = new FilterQuery();
+		// fq.language("en");
+		// twitterStream.filter();
 		return "index";
 	}
 

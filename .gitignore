@@ -16,6 +16,6 @@ log/
 target/
 
 *.class
-
-#hibernate
-hibernate.cfg.xml
+Credentials.java
+//#hibernate
+//hibernate.cfg.xml
