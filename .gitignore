@@ -16,6 +16,6 @@ log/
 target/
 
 *.class
-Credentials.java
+src/net/twaiku/Credentials.java
 //#hibernate
 //hibernate.cfg.xml
