@@ -12,6 +12,7 @@ public class HomeController {
 	@RequestMapping({ "/index", "/" })
 	public String index() {
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+		configurationBuilder.setTweetModeExtended(true);
 		configurationBuilder.setOAuthConsumerKey(Credentials.CLIENT_ID)
 				.setOAuthConsumerSecret(Credentials.CLIENT_SECRET).setOAuthAccessToken(Credentials.AccessToken_ID)
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
@@ -21,13 +22,16 @@ public class HomeController {
 			@Override
 			public void onStatus(Status status) {
 				
-				if (status.getLang().toString().equals("en")) {
+				
+				if (status.getLang().toString().equals("en")&& (status.getHashtagEntities().length == 0) && (status.isRetweet()==false)) {
 					tweetCount++;
-					System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText() + " - GETID:"
-							+ status.getId() + " TweetCount" + tweetCount );
-					//This errors with NullPointerException
-					//System.out.println(status.getRateLimitStatus());
 					
+									
+					System.out.println( "Tweet TXT ONLY " + status.getText());
+					System.out.println("@" + status.getUser().getScreenName()+ " Tweet LENGTH : " + status.getText().length() 
+							+ " - " + status.getText() + " - GETID:"
+							+ status.getId() + " TweetCount" + tweetCount );
+				
 				}
 			}
 
