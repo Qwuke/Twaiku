@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.twaiku.dto.TwaikuDTO" table="Tweet"
+		schema="twaiku">
+
+
+		<id name="TweeteID">
+			
+			<column name="TweetID" sql-type="BIGINT"></column>
+		</id>
+
+		<property name="UserName">
+			<column name="UserName" sql-type="varchar(30)" length="30"></column>
+		</property>
+		<property name="TweetString">
+			<column name="TweetString" sql-type="varchar(255)" length="255"></column>
+		</property>
+		
+
+
+
+	</class>
+</hibernate-mapping>	
