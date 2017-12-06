@@ -115,11 +115,6 @@
 			<version>4.0.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.opennlp</groupId>
-			<artifactId>opennlp-tools</artifactId>
-			<version>1.8.3</version>
-		</dependency>
-		<dependency>
 			<groupId>edu.cmu.sphinx</groupId>
 			<artifactId>sphinx4-core</artifactId>
 			<version>5prealpha-SNAPSHOT</version>

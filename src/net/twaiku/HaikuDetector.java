@@ -1,11 +1,14 @@
 package net.twaiku;
 
-import opennlp.tools.*;
-import edu.cmu.sphinx.api.Configuration;
-import edu.cmu.sphinx.api.SpeechResult;
-import edu.cmu.sphinx.api.StreamSpeechRecognizer;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import edu.cmu.sphinx.linguist.dictionary.*;
 
 public class HaikuDetector {
-	
-
+	public void megadog(ArrayList<String> words) throws IOException{
+		TextDictionary td = new TextDictionary();
+		td.allocate();
+		System.out.println(td.getWordDictionaryFile().toString());
+	}
 }
