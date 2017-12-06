@@ -16,19 +16,15 @@ public class TwaikuBotController {
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 		TwitterFactory tf = new TwitterFactory(cf.build());
 		Twitter twitter = tf.getInstance();
-		
-		
-			try {
-				
-				status = twitter.updateStatus("TEST UPDATE From JAVA NEW class  and package test#3 < error");
-				System.out.println("Successfully updated the status to [" + status.getText() + "].");
-			} catch (TwitterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
-		
+
+		try {
+
+			status = twitter.updateStatus("TEST UPDATE From JAVA NEW class  and package test#3 < error");
+			System.out.println("Successfully updated the status to [" + status.getText() + "].");
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

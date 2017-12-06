@@ -21,40 +21,20 @@ public class HomeController {
 	@RequestMapping({ "/index", "/" })
 	public String index() {
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		// ConfigurationBuilder cf = new ConfigurationBuilder();
+		
 		configurationBuilder.setTweetModeExtended(true);
 		configurationBuilder.setOAuthConsumerKey(Credentials.CLIENT_ID)
 				.setOAuthConsumerSecret(Credentials.CLIENT_SECRET).setOAuthAccessToken(Credentials.AccessToken_ID)
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 
-		// BOT post credentials must be different on a different configurationBUilder
-		// cf.setOAuthConsumerKey(Credentials.CLIENT_ID).setOAuthConsumerSecret(Credentials.CLIENT_SECRET)
-		// .setOAuthAccessToken(Credentials.AccessToken_ID)
-		// .setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
-		// TwitterFactory tf = new TwitterFactory(cf.build());
-		// Twitter twitter = tf.getInstance();
-		// end of tweet bot test post
 
 		TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
-		// TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+		
 
 		StatusListener listener = new StatusListener() {
 			@Override
 			public void onStatus(Status status) {
-				// testing bot
-				// if (postCount <= 0) {
-				// try {
-				// postCount++;
-				// status = twitter.updateStatus("TEST UPDATE From JAVA post count Test");
-				// System.out.println("Successfully updated the status to [" + status.getText()
-				// + "].");
-				// } catch (TwitterException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				// }
-
-				// testing bot
+							
 				
 				if (postCount <= 0) {
 					postCount ++;
