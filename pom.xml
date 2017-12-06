@@ -25,6 +25,18 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>snapshots-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -103,9 +115,19 @@
 			<version>4.0.6</version>
 		</dependency>
 		<dependency>
-  			<groupId>org.apache.opennlp</groupId>
-  			<artifactId>opennlp-tools</artifactId>
-  			<version>1.8.3</version>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.cmu.sphinx</groupId>
+			<artifactId>sphinx4-core</artifactId>
+			<version>5prealpha-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.cmu.sphinx</groupId>
+			<artifactId>sphinx4-data</artifactId>
+			<version>5prealpha-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
