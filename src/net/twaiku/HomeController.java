@@ -1,8 +1,12 @@
 package net.twaiku;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import edu.cmu.sphinx.linguist.WordSearchState;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -20,6 +24,18 @@ public class HomeController {
 
 	@RequestMapping({ "/index", "/" })
 	public String index() {
+		
+		ArrayList<String> words = new ArrayList<String>(); 
+		words.add("Hi");
+		words.add("hello");
+		words.add("BYE");
+		try {
+			HaikuDetector.megadog(words);
+		} catch (IOException e) {
+			System.out.println("Failed at allocate");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 		
 		configurationBuilder.setTweetModeExtended(true);
