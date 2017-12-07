@@ -11,22 +11,19 @@ public class tweetSweeper {
 
 	public static ArrayList<String> tweets(String tweets) {
 		ArrayList<String> list = new ArrayList<String>();
-		// fill the array with a string
+
 		for (String word : tweets.split(" ")) {
 			list.add(word);
 		}
 
-		// Create two while loops to check for the first index and last index of the
-		// ArrayList
-		while ((list.get(0)).contains("@") || list.get(0).contains("Http")) {
+		while ((list.get(0)).contains("@") || list.get(0).contains("http")) {
 			list.remove(0);
 		}
 		while (list.get(list.size() - 1).contains("@") || list.get(list.size() - 1).contains("http")) {
 			list.remove(list.get(list.size() - 1));
 		}
-		// System.out.println(list);
 
-		if (list.contains("@")) {
+		if (list.contains("@") || list.contains("http")) {
 			list.clear();
 		}
 		return list;
