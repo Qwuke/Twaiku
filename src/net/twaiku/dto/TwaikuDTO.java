@@ -2,7 +2,7 @@ package net.twaiku.dto;
 
 public class TwaikuDTO {
 	
-	private int TweetID;
+	private long TweetID;
 	private String UserName;
 	private String TweetString;
 
@@ -10,19 +10,19 @@ public class TwaikuDTO {
 		
 	}
 
-	public TwaikuDTO(int tweetID, String userName, String tweetString) {
+	public TwaikuDTO(long tweetID, String userName, String tweetString) {
 		
 		TweetID = tweetID;
 		UserName = userName;
 		TweetString = tweetString;
 	}
 
-	public int getTweetID() {
+	public long getTweetID() {
 		return TweetID;
 	}
 
-	public void setTweetID(int tweetID) {
-		TweetID = tweetID;
+	public void setTweetID(long longTweetId) {
+		TweetID = longTweetId;
 	}
 
 	public String getUserName() {

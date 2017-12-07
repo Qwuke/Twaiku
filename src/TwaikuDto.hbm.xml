@@ -8,7 +8,7 @@
 		schema="twaiku">
 
 
-		<id name="TweeteID">
+		<id name="TweetID">
 			
 			<column name="TweetID" sql-type="BIGINT"></column>
 		</id>

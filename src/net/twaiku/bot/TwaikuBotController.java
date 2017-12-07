@@ -19,7 +19,7 @@ public class TwaikuBotController {
 
 		try {
 
-			status = twitter.updateStatus("TEST UPDATE From JAVA NEW class  and package test#3 < error");
+			status = twitter.updateStatus("TEST UPDATE From JAVA NEW Anothertwo");
 			System.out.println("Successfully updated the status to [" + status.getText() + "].");
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block

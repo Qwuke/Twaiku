@@ -124,5 +124,12 @@
 			<artifactId>sphinx4-data</artifactId>
 			<version>5prealpha-SNAPSHOT</version>
 		</dependency>
+
+<!-- test adding dependency -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
 	</dependencies>
 </project>
