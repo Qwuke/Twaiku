@@ -32,7 +32,7 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "@Supermari64 what a waste of money smh";
+	public String words = "@Supermari64 what a waste of money smh!!";
 	
 	public int tweetCount;
 	public int postCount;
@@ -78,11 +78,11 @@ public class HomeController {
 		//tweetSweeper.countNum returns the total count of the syllables in the tweet
 		System.out.println(tweetSweeper.countNum(tweetSweeper.wordCheck(tweetSweeper.tweets(words))));
 		//tweetSweeper.wordCheck returns a list of syllables in each word in the String
-		System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
+		//System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
 		//tweetSweeper.tweets returns a list of the words in a String. Also removes @ and http from both ends of the String 
 		//also checks if the String has @ or http in the middle which if true will remove that tweet from our arrayList
 		//words is a string made at the top of the program to test taking in a tweet
-		System.out.println(tweetSweeper.tweets(words));
+		//System.out.println(tweetSweeper.tweets(words));
 
 		/*
 		 * for (RhymeResult result : results) { System.out.println("Results for " +
