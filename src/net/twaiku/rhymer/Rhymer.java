@@ -29,90 +29,117 @@ import java.util.TreeSet;
 
 public abstract class Rhymer {
 
-    /**
-     * @param word the word for which we want to find rhymes.
-     * @return a list of RhymeResults.  Most words will have one RhymeResult.  Words with multiple possible
-     * pronunciations (word variants) will have one RhymeResult per variant.
-     */
-    public List<RhymeResult> getRhymingWords(String word) {
-        return getRhymingWords(word, -1);
-    }
+	/**
+	 * @param word
+	 *            the word for which we want to find rhymes.
+	 * @return a list of RhymeResults. Most words will have one RhymeResult. Words
+	 *         with multiple possible pronunciations (word variants) will have one
+	 *         RhymeResult per variant.
+	 */
+	public List<RhymeResult> getRhymingWords(String word) {
+		return getRhymingWords(word, -1);
+	}
 
-    /**
-     * @param word the word for which we want to find rhymes.
-     * @param maxResults return at most this many results per rhyme type. For no limit, pass -1.
-     * @return a list of RhymeResults.  Most words will have one RhymeResult.  Words with multiple possible
-     * pronunciations (word variants) will have one RhymeResult per variant.
-     */
-    public List<RhymeResult> getRhymingWords(String word, int maxResults) {
-        List<RhymeResult> results = new ArrayList<>();
-        String lookupWord = word.toLowerCase(Locale.US);
+	public int getSyllables(String word) {
+		List<RhymeResult> results = new ArrayList<>();
+		String lookupWord = word.toLowerCase(Locale.US);
 
-        // The word doesn't exist in our dictionary
-        List<WordVariant> wordVariants = getWordVariants(lookupWord);
-        if (wordVariants == null) return results;
+		// The word doesn't exist in our dictionary
+		List<WordVariant> wordVariants = getWordVariants(lookupWord);
+		if (wordVariants == null) {
+			System.out.println(word + ": ");
+			System.out.println("Not in our dictionary");
+			return 0;
+		} else {
+			//OTHERWISE we start looking for syllables in the word variant
+			System.out.println(word + ": ");
+			WordVariant firstVariant= wordVariants.get(0);
+			
+			//Count syllables in first variant
+			//return number of syllables
+			return firstVariant.syllableNumber;
+		}
+		
+	}
 
-        // One RhymeResult per word variant (pronunciation)
-        for (WordVariant wordVariant : wordVariants) {
+	/**
+	 * @param word
+	 *            the word for which we want to find rhymes.
+	 * @param maxResults
+	 *            return at most this many results per rhyme type. For no limit,
+	 *            pass -1.
+	 * @return a list of RhymeResults. Most words will have one RhymeResult. Words
+	 *         with multiple possible pronunciations (word variants) will have one
+	 *         RhymeResult per variant.
+	 */
+	public List<RhymeResult> getRhymingWords(String word, int maxResults) {
+		List<RhymeResult> results = new ArrayList<>();
+		String lookupWord = word.toLowerCase(Locale.US);
 
-            SortedSet<String> matches0 = getWordsWithLastStressSyllable(wordVariant.lastStressRhymingSyllables);
-            SortedSet<String> matches1 = getWordsWithLastSyllable(wordVariant.lastRhymingSyllable);
-            SortedSet<String> matches2 = new TreeSet<>();
-            SortedSet<String> matches3 = new TreeSet<>();
+		// The word doesn't exist in our dictionary
+		List<WordVariant> wordVariants = getWordVariants(lookupWord);
+		if (wordVariants == null)
+			return results;
 
-            if (wordVariant.lastTwoRhymingSyllables != null) {
-                matches2 = getWordsWithLastTwoSyllables(wordVariant.lastTwoRhymingSyllables);
-                matches1.removeAll(matches2);
-            }
-            if (wordVariant.lastThreeRhymingSyllables != null) {
-                matches3 = getWordsWithLastThreeSyllables(wordVariant.lastThreeRhymingSyllables);
-                matches1.removeAll(matches3);
-                matches2.removeAll(matches3);
-            }
+		// One RhymeResult per word variant (pronunciation)
+		for (WordVariant wordVariant : wordVariants) {
 
-            matches0.remove(word);
-            matches1.remove(word);
-            matches2.remove(word);
-            matches3.remove(word);
+			SortedSet<String> matches0 = getWordsWithLastStressSyllable(wordVariant.lastStressRhymingSyllables);
+			SortedSet<String> matches1 = getWordsWithLastSyllable(wordVariant.lastRhymingSyllable);
+			SortedSet<String> matches2 = new TreeSet<>();
+			SortedSet<String> matches3 = new TreeSet<>();
 
-            matches1.removeAll(matches0);
-            matches2.removeAll(matches0);
-            matches3.removeAll(matches0);
+			if (wordVariant.lastTwoRhymingSyllables != null) {
+				matches2 = getWordsWithLastTwoSyllables(wordVariant.lastTwoRhymingSyllables);
+				matches1.removeAll(matches2);
+			}
+			if (wordVariant.lastThreeRhymingSyllables != null) {
+				matches3 = getWordsWithLastThreeSyllables(wordVariant.lastThreeRhymingSyllables);
+				matches1.removeAll(matches3);
+				matches2.removeAll(matches3);
+			}
 
-            if (!matches0.isEmpty()
-                    || !matches1.isEmpty()
-                    || !matches2.isEmpty()
-                    || !matches3.isEmpty()) {
-                RhymeResult result = new RhymeResult(wordVariant.variantNumber,
-                        toArray(matches0, maxResults),
-                        toArray(matches1, maxResults),
-                        toArray(matches2, maxResults),
-                        toArray(matches3, maxResults));
-                results.add(result);
-            }
-        }
-        return results;
-    }
+			matches0.remove(word);
+			matches1.remove(word);
+			matches2.remove(word);
+			matches3.remove(word);
 
-    private static String[] toArray(Set<String> set, int limit) {
-        // Some words, like "puppy", match way too many words.... any word
-        // ending with an "ee" sound (IY0 phone).
-        // TODO maybe there is a better way to solve this problem.
+			matches1.removeAll(matches0);
+			matches2.removeAll(matches0);
+			matches3.removeAll(matches0);
 
-        if (limit < 0) return set.toArray(new String[set.size()]);
-        String[] result = new String[Math.min(set.size(), limit)];
-        int index = 0;
-        for (Iterator<String> iterator = set.iterator(); iterator.hasNext() && index < limit; index++) {
-            result[index] = iterator.next();
-        }
-        return result;
-    }
+			if (!matches0.isEmpty() || !matches1.isEmpty() || !matches2.isEmpty() || !matches3.isEmpty()) {
+				RhymeResult result = new RhymeResult(wordVariant.variantNumber, toArray(matches0, maxResults),
+						toArray(matches1, maxResults), toArray(matches2, maxResults), toArray(matches3, maxResults));
+				results.add(result);
+			}
+		}
+		return results;
+	}
 
-    protected abstract List<WordVariant> getWordVariants(String word);
-    protected abstract SortedSet<String> getWordsWithLastStressSyllable(String lastStressSyllable);
-    protected abstract SortedSet<String> getWordsWithLastSyllable(String lastSyllable);
-    protected abstract SortedSet<String> getWordsWithLastTwoSyllables(String lastTwoSyllables);
-    protected abstract SortedSet<String> getWordsWithLastThreeSyllables(String lastThreeSyllables);
+	private static String[] toArray(Set<String> set, int limit) {
+		// Some words, like "puppy", match way too many words.... any word
+		// ending with an "ee" sound (IY0 phone).
+		// TODO maybe there is a better way to solve this problem.
 
+		if (limit < 0)
+			return set.toArray(new String[set.size()]);
+		String[] result = new String[Math.min(set.size(), limit)];
+		int index = 0;
+		for (Iterator<String> iterator = set.iterator(); iterator.hasNext() && index < limit; index++) {
+			result[index] = iterator.next();
+		}
+		return result;
+	}
+
+	protected abstract List<WordVariant> getWordVariants(String word);
+
+	protected abstract SortedSet<String> getWordsWithLastStressSyllable(String lastStressSyllable);
+
+	protected abstract SortedSet<String> getWordsWithLastSyllable(String lastSyllable);
+
+	protected abstract SortedSet<String> getWordsWithLastTwoSyllables(String lastTwoSyllables);
+
+	protected abstract SortedSet<String> getWordsWithLastThreeSyllables(String lastThreeSyllables);
 
 }

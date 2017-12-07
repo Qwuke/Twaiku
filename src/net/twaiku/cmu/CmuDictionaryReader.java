@@ -80,7 +80,8 @@ class CmuDictionaryReader {
                 String lastRhymingSyllable = concatenateLastSyllables(syllables, 1);
                 String lastTwoRhymingSyllables = concatenateLastSyllables(syllables, 2);
                 String lastThreeRhymingSyllables = concatenateLastSyllables(syllables, 3);
-                WordVariant wordVariant = new WordVariant(variantNumber, lastStressRhymingSyllables, lastRhymingSyllable, lastTwoRhymingSyllables, lastThreeRhymingSyllables);
+                int syllableCount = syllables.length;
+                WordVariant wordVariant = new WordVariant(variantNumber, lastStressRhymingSyllables, lastRhymingSyllable, lastTwoRhymingSyllables, lastThreeRhymingSyllables, syllableCount);
                 List<WordVariant> wordVariants = words.get(word);
                 if(wordVariants == null) {
                     wordVariants = new ArrayList<>();

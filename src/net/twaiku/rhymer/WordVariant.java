@@ -32,14 +32,16 @@ public class WordVariant {
      * The number of the variant.  For example, for TUESDAY, this would be 0.  For TUESDAY(1), this would be 1.
      */
     public final int variantNumber;
-
+    
+    public final int syllableNumber;
     public final String lastStressRhymingSyllables;
     public final String lastRhymingSyllable;
     public final String lastTwoRhymingSyllables;
     public final String lastThreeRhymingSyllables;
 
-    public WordVariant(int variantNumber, String lastStressRhymingSyllables, String lastRhymingSyllable, String lastTwoRhymingSyllables, String lastThreeRhymingSyllables) {
-        this.variantNumber = variantNumber;
+    public WordVariant(int variantNumber, String lastStressRhymingSyllables, String lastRhymingSyllable, String lastTwoRhymingSyllables, String lastThreeRhymingSyllables, int syllableNumber) {
+        this.syllableNumber = syllableNumber;
+    	this.variantNumber = variantNumber;
         this.lastStressRhymingSyllables = lastStressRhymingSyllables;
         this.lastRhymingSyllable = lastRhymingSyllable;
         this.lastTwoRhymingSyllables = lastTwoRhymingSyllables;

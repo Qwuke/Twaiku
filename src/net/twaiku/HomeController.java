@@ -2,6 +2,8 @@ package net.twaiku;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,9 @@ import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 import net.twaiku.bot.TwaikuBotController;
+import net.twaiku.cmu.CmuDictionary;
+import net.twaiku.rhymer.RhymeResult;
+import net.twaiku.rhymer.Rhymer;
 
 @Controller
 public class HomeController {
@@ -23,38 +28,51 @@ public class HomeController {
 	public int postCount;
 
 	@RequestMapping({ "/index", "/" })
-	public String index() {
-		
-		ArrayList<String> words = new ArrayList<String>(); 
-		words.add("Hi");
-		words.add("hello");
-		words.add("BYE");
-		try {
-			HaikuDetector.megadog(words);
-		} catch (IOException e) {
-			System.out.println("Failed at allocate");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public String index() throws IOException {
+
+		/*
+		 * ArrayList<String> words = new ArrayList<String>(); words.add("Hi");
+		 * words.add("hello"); words.add("BYE");
+		 */
+		Rhymer rhymer = CmuDictionary.loadRhymer();
+		System.out.println(rhymer.getSyllables("kkkkkkkk"));
+		System.out.println(rhymer.getSyllables("hello"));
+		System.out.println(rhymer.getSyllables("refrigerator"));
+		System.out.println(rhymer.getSyllables("shoreline"));
+
+
+
+		/*for (RhymeResult result : results) {
+			System.out.println("Results for " + result.variantNumber + ":");
+
+			System.out.println("  Strict matches:");
+			System.out.println("    " + Arrays.toString(result.strictRhymes));
+			System.out.println();
+			System.out.println("  One-syllable matches:");
+			System.out.println("    " + Arrays.toString(result.oneSyllableRhymes));
+			System.out.println();
+			System.out.println("  Two-syllable matches:");
+			System.out.println("    " + Arrays.toString(result.twoSyllableRhymes));
+			System.out.println();
+			System.out.println("  Three-syllable matches:");
+			System.out.println("    " + Arrays.toString(result.threeSyllableRhymes));
+		}*/
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		
+
 		configurationBuilder.setTweetModeExtended(true);
 		configurationBuilder.setOAuthConsumerKey(Credentials.CLIENT_ID)
 				.setOAuthConsumerSecret(Credentials.CLIENT_SECRET).setOAuthAccessToken(Credentials.AccessToken_ID)
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 
-
 		TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
-		
 
 		StatusListener listener = new StatusListener() {
 			@Override
 			public void onStatus(Status status) {
-							
-				
+
 				if (postCount <= 0) {
-					postCount ++;
-					TwaikuBotController.botTweetPost(status);					
+					postCount++;
+					TwaikuBotController.botTweetPost(status);
 				}
 
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
