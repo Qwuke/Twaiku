@@ -1,6 +1,7 @@
 package net.twaiku;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,11 +24,16 @@ import net.twaiku.bot.TwaikuBotController;
 import net.twaiku.cmu.CmuDictionary;
 import net.twaiku.dto.TwaikuDAO;
 import net.twaiku.dto.TwaikuDTO;
+
 import net.twaiku.rhymer.Rhymer;
+import net.twaiku.rhymer.RhymeResult;
+
 import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
+	public String words = "@Supermari64 what a waste of money smh";
+	
 	public int tweetCount;
 	public int postCount;
 	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -55,18 +61,28 @@ public class HomeController {
 
 	@RequestMapping({ "/index", "/" })
 	public String index() throws IOException {
-
+		
 		/*
 		 * ArrayList<String> words = new ArrayList<String>(); words.add("Hi");
 		 * words.add("hello"); words.add("BYE");
 		 */
 		
 		//working code below
-//		Rhymer rhymer = CmuDictionary.loadRhymer();
-//		System.out.println(rhymer.getSyllables("kkkkkkkk"));
-//		System.out.println(rhymer.getSyllables("hello"));
-//		System.out.println(rhymer.getSyllables("refrigerator"));
-//		System.out.println(rhymer.getSyllables("shoreline"));
+		Rhymer rhymer = CmuDictionary.loadRhymer();
+		System.out.println(rhymer.getSyllables("kkkkkkkk"));
+		System.out.println(rhymer.getSyllables("hello"));
+		System.out.println(rhymer.getSyllables("refrigerator"));
+		System.out.println(rhymer.getSyllables("shoreline"));
+		
+		//working code below 
+		//tweetSweeper.countNum returns the total count of the syllables in the tweet
+		System.out.println(tweetSweeper.countNum(tweetSweeper.wordCheck(tweetSweeper.tweets(words))));
+		//tweetSweeper.wordCheck returns a list of syllables in each word in the String
+		System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
+		//tweetSweeper.tweets returns a list of the words in a String. Also removes @ and http from both ends of the String 
+		//also checks if the String has @ or http in the middle which if true will remove that tweet from our arrayList
+		//words is a string made at the top of the program to test taking in a tweet
+		System.out.println(tweetSweeper.tweets(words));
 
 		/*
 		 * for (RhymeResult result : results) { System.out.println("Results for " +

@@ -11,15 +11,15 @@
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twaiku</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.username"></property>
-		<property name="hibernate.connection.password"></property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">Redwings25</property>
 		<!-- The show-sql property set to true is used for testing and allows us 
 			to see the hibernate queries in our console -->
 		<property name="show_sql">true</property>
 		<!-- This mapping directs the application on where to find the objects 
 			to use with the DB -->
-		<mapping class="com.gc.dto.ProductDto"></mapping>
-		<mapping resource="ProductDto.hbm.xml"></mapping>
+		<mapping class="net.twaiku.dto.TwaikuDTO"></mapping>
+		<mapping resource="TwaikuDto.hbm.xml"></mapping>
 
 	</session-factory>
 
