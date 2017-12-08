@@ -38,7 +38,7 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "@Supermari64 what a waste of money smh!!";
+	public String words = "@Supermari64 what a waste of money: smh!!";
 
 	public int tweetCount;
 	public int postCount;
@@ -73,11 +73,11 @@ public class HomeController {
 		 */
 
 		// working code below
-		// Rhymer rhymer = CmuDictionary.loadRhymer();
-		// System.out.println(rhymer.getSyllables("kkkkkkkk"));
-		// System.out.println(rhymer.getSyllables("hello"));
-		// System.out.println(rhymer.getSyllables("refrigerator"));
-		// System.out.println(rhymer.getSyllables("shoreline"));
+		 Rhymer rhymer = CmuDictionary.loadRhymer();
+		// System.out.println(rhymer.getSyllables("mr"));
+		 //System.out.println(rhymer.getSyllables("mr.matt"));
+		// System.out.println(rhymer.getSyllables("Help...me"));
+		// System.out.println(rhymer.getSyllables("Mr.Dobalina"));
 
 		// working code below
 		// tweetSweeper.countNum returns the total count of the syllables in the tweet

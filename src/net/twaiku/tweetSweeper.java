@@ -3,6 +3,8 @@ package net.twaiku;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider.Text;
+
 import net.twaiku.cmu.CmuDictionary;
 import net.twaiku.rhymer.Rhymer;
 import net.twaiku.rhymer.RhymeResult;
@@ -12,9 +14,12 @@ public class tweetSweeper {
 	public static ArrayList<String> tweets(String tweets) throws IOException {
 		Rhymer rhymer = CmuDictionary.loadRhymer();
 		ArrayList<String> list = new ArrayList<String>();
+		
+		//tweets.replaceAll("(?=\\p{Punct})|(?<=\\p{Punct})", " ");
 
-		for (String word : tweets.split(" ")) {
+		for (String word : tweets.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})")) {
 			list.add(word);
+			
 		}
 
 		while ((list.get(0)).contains("@") || list.get(0).contains("http")) {
