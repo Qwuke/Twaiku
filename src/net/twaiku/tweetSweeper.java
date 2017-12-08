@@ -11,8 +11,7 @@ import net.twaiku.rhymer.RhymeResult;
 
 public class tweetSweeper {
 
-	public static ArrayList<String> tweets(String tweets) throws IOException {
-		Rhymer rhymer = CmuDictionary.loadRhymer();
+	public static String[] tweets(String tweets) throws IOException {
 		ArrayList<String> list = new ArrayList<String>();
 		
 		//tweets.replaceAll("(?=\\p{Punct})|(?<=\\p{Punct})", " ");
@@ -32,12 +31,7 @@ public class tweetSweeper {
 		if (list.contains("@") || list.contains("http")) {
 			list.clear();
 		}
-		for (int i = 0; i < list.size(); i++) {
-			if (rhymer.getSyllables(list.get(i)) == 0) {
-				list.remove(i);
-			}
-		}
-		return list;
+		return list.toArray(new String[list.size()]);
 	}
 
 	public static ArrayList<Integer> wordCheck(ArrayList<String> list) throws IOException {

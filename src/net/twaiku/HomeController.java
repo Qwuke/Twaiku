@@ -73,15 +73,15 @@ public class HomeController {
 		 */
 
 		// working code below
-		 Rhymer rhymer = CmuDictionary.loadRhymer();
+		Rhymer rhymer = CmuDictionary.loadRhymer();
 		// System.out.println(rhymer.getSyllables("mr"));
-		 //System.out.println(rhymer.getSyllables("mr.matt"));
+		// System.out.println(rhymer.getSyllables("mr.matt"));
 		// System.out.println(rhymer.getSyllables("Help...me"));
 		// System.out.println(rhymer.getSyllables("Mr.Dobalina"));
 
 		// working code below
 		// tweetSweeper.countNum returns the total count of the syllables in the tweet
-		System.out.println(tweetSweeper.countNum(tweetSweeper.wordCheck(tweetSweeper.tweets(words))));
+
 		// tweetSweeper.wordCheck returns a list of syllables in each word in the String
 		// System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
 		// tweetSweeper.tweets returns a list of the words in a String. Also removes @
@@ -185,9 +185,18 @@ public class HomeController {
 		}
 		return str2Check;
 	}
-
+	public String eachWord(String[] words) {
+		String last = "";
+		for(String s:words) {
+		 last+=(s + ",");
+		}
+		return last;
+	}
 	@RequestMapping({ "/index", "/" })
-	public ModelAndView index(Model model) {
+	public ModelAndView index(Model model) throws IOException {
+		System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega dog mega mega dog")));
+		System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega mega dog mega mega dog")));
+		System.out.println(eachWord(tweetSweeper.tweets("One, one one, one one. One #one @howdy butts...hi hi.")));
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
 
@@ -226,12 +235,12 @@ public class HomeController {
 
 		return new ModelAndView("index", "tweetTable", list);
 	}
-	
+
 	private ArrayList<TwaikuDTO> getAllTweets() {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit = session.createCriteria(TwaikuDTO.class);
-		
+
 		ArrayList<TwaikuDTO> list = (ArrayList<TwaikuDTO>) crit.list();
 		tx.commit();
 		session.close();

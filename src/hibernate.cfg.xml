@@ -8,11 +8,11 @@
 	<!-- a SessionFactory instance -->
 	<session-factory>
 		<!-- This is the same connection info we used for JDBC -->
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twaiku</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Twaiku</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">Redwings25</property>
+		<property name="hibernate.connection.password">Megadog69</property>
 		<!-- The show-sql property set to true is used for testing and allows us 
 			to see the hibernate queries in our console -->
 		<property name="show_sql">true</property>
