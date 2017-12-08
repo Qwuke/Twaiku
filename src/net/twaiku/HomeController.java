@@ -2,12 +2,16 @@ package net.twaiku;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -16,6 +20,8 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -33,15 +39,15 @@ import net.twaiku.util.HibernateUtil;
 @Controller
 public class HomeController {
 	public String words = "@Supermari64 what a waste of money smh!!";
-	
+
 	public int tweetCount;
 	public int postCount;
 	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-	
+
 	public String updateTwaikuDatabaseTweets(long longTweetId, String tweetName, String tweetString) {
 
-		//Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		//SessionFactory sessionFactory = config.buildSessionFactory();
+		// Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		// SessionFactory sessionFactory = config.buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		TwaikuDTO newTwaikuDTO = new TwaikuDTO();
@@ -49,40 +55,41 @@ public class HomeController {
 		newTwaikuDTO.setTweetID(longTweetId);
 		newTwaikuDTO.setUserName(tweetName);
 		newTwaikuDTO.setTweetString(tweetString);
-		
 
 		session.save(newTwaikuDTO);
 		tx.commit();
 		session.close();
-		
 
 		return "";
 	}
 
-	@RequestMapping({ "/index", "/" })
-	public String index() throws IOException {
-		
+	// @RequestMapping("/user")
+	@RequestMapping("/user")
+	public String user() throws IOException {
+
 		/*
 		 * ArrayList<String> words = new ArrayList<String>(); words.add("Hi");
 		 * words.add("hello"); words.add("BYE");
 		 */
-		
-		//working code below
-		Rhymer rhymer = CmuDictionary.loadRhymer();
-		System.out.println(rhymer.getSyllables("kkkkkkkk"));
-		System.out.println(rhymer.getSyllables("hello"));
-		System.out.println(rhymer.getSyllables("refrigerator"));
-		System.out.println(rhymer.getSyllables("shoreline"));
-		
-		//working code below 
-		//tweetSweeper.countNum returns the total count of the syllables in the tweet
+
+		// working code below
+		// Rhymer rhymer = CmuDictionary.loadRhymer();
+		// System.out.println(rhymer.getSyllables("kkkkkkkk"));
+		// System.out.println(rhymer.getSyllables("hello"));
+		// System.out.println(rhymer.getSyllables("refrigerator"));
+		// System.out.println(rhymer.getSyllables("shoreline"));
+
+		// working code below
+		// tweetSweeper.countNum returns the total count of the syllables in the tweet
 		System.out.println(tweetSweeper.countNum(tweetSweeper.wordCheck(tweetSweeper.tweets(words))));
-		//tweetSweeper.wordCheck returns a list of syllables in each word in the String
-		//System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
-		//tweetSweeper.tweets returns a list of the words in a String. Also removes @ and http from both ends of the String 
-		//also checks if the String has @ or http in the middle which if true will remove that tweet from our arrayList
-		//words is a string made at the top of the program to test taking in a tweet
-		//System.out.println(tweetSweeper.tweets(words));
+		// tweetSweeper.wordCheck returns a list of syllables in each word in the String
+		// System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
+		// tweetSweeper.tweets returns a list of the words in a String. Also removes @
+		// and http from both ends of the String
+		// also checks if the String has @ or http in the middle which if true will
+		// remove that tweet from our arrayList
+		// words is a string made at the top of the program to test taking in a tweet
+		// System.out.println(tweetSweeper.tweets(words));
 
 		/*
 		 * for (RhymeResult result : results) { System.out.println("Results for " +
@@ -110,26 +117,24 @@ public class HomeController {
 			@Override
 			public void onStatus(Status status) {
 
-				
-
 				if (postCount == 0) {
 					postCount++;
-					//TwaikuBotController.botTweetPost(status);
+					// TwaikuBotController.botTweetPost(status);
 				}
-			//	if (tweetCount <= 1) {
-					if ( status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
-							&& (status.isRetweet() == false) && status.getText().length() < 255) {
-						tweetCount++;
-						
-						
-						updateTwaikuDatabaseTweets(status.getId(),  status.getUser().getScreenName(), regexChecker(status.getText()));
-					
-						System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
-								+ status.getText().length() + " - " + status.getText() + " - GETID:" + status.getId()
-								+ " TweetCount" + tweetCount);
+				// if (tweetCount <= 1) {
+				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
+						&& (status.isRetweet() == false) && status.getText().length() < 255) {
+					tweetCount++;
 
-					}
-				
+					updateTwaikuDatabaseTweets(status.getId(), status.getUser().getScreenName(),
+							regexChecker(status.getText()));
+
+					System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
+							+ status.getText().length() + " - " + status.getText() + " - GETID:" + status.getId()
+							+ " TweetCount" + tweetCount);
+
+				}
+
 			}
 
 			@Override
@@ -164,20 +169,73 @@ public class HomeController {
 		// FilterQuery fq = new FilterQuery();
 		// fq.language("en");
 		// twitterStream.filter();
-		return "index";
+		return "user";
 	}
+
 	public static String regexChecker(String str2Check) {
-        Pattern checkRegex = Pattern.compile("[a-zA-Z0-9\\t\\n ./<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\\\-]");
-        Matcher regexMatcher = checkRegex.matcher(str2Check);
-        str2Check = "";
-        while (regexMatcher.find()) {
-            if(regexMatcher.group().length() !=0){
-                //System.out.print(regexMatcher.group());
-                str2Check+=regexMatcher.group();
-        
-        }
-        }
-        return str2Check;
-    }
+		Pattern checkRegex = Pattern.compile("[a-zA-Z0-9\\t\\n ./<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\\\-]");
+		Matcher regexMatcher = checkRegex.matcher(str2Check);
+		str2Check = "";
+		while (regexMatcher.find()) {
+			if (regexMatcher.group().length() != 0) {
+				// System.out.print(regexMatcher.group());
+				str2Check += regexMatcher.group();
+
+			}
+		}
+		return str2Check;
+	}
+
+	@RequestMapping({ "/index", "/" })
+	public ModelAndView index(Model model) {
+
+		ArrayList<TwaikuDTO> list = getAllTweets();
+
+		// Query q = session.createQuery("from TwaikuDTO");
+		// List<TwaikuDTO> g1 = q.list();
+		// System.out.println("data loaded here");
+		// for(TwaikuDTO g2:g1)
+		// {
+		//
+		//
+		// //System.out.println("this is the second query");
+		// Query q2 = session.createQuery("select g.TweetID,g.UserName,g.TweetString
+		// from TwaikuDTO g ");
+		// List l1 = q2.list();
+		// Iterator i = l1.iterator();
+		// while(i.hasNext())
+		// {
+		// Object[] obj = (Object[])i.next();
+		// long tweetID = (long)obj[0];
+		// String name = (String)obj[1];
+		// String tweet = (String)obj[2];
+		// System.out.println(tweetID);
+		// System.out.println(name);
+		// System.out.println(tweet);
+		//
+		// }
+		//
+		//
+		//
+		//
+		// session.flush();
+		// session.close();
+		// }
+		//
+		//
+
+		return new ModelAndView("index", "tweetTable", list);
+	}
+	
+	private ArrayList<TwaikuDTO> getAllTweets() {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(TwaikuDTO.class);
+		
+		ArrayList<TwaikuDTO> list = (ArrayList<TwaikuDTO>) crit.list();
+		tx.commit();
+		session.close();
+		return list;
+	}
 
 }
