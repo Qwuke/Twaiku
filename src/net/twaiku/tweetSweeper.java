@@ -16,12 +16,19 @@ public class tweetSweeper {
 		
 		//tweets.replaceAll("(?=\\p{Punct})|(?<=\\p{Punct})", " ");
 
-		for (String word : tweets.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})")) {
-			list.add(word);
+		if (tweets.contains("http")) {
+			
+			return list.toArray(new String[list.size()]);
 			
 		}
+		for (String word : tweets.split(("[^a-zA-Z'@]"))) {
+			if(!word.equals("")) {
+				list.add(word);
+			}
+		}
 
-		while ((list.get(0)).contains("@") || list.get(0).contains("http")) {
+		while ((list.get(0)).contains("@")) {
+			
 			list.remove(0);
 		}
 		while (list.get(list.size() - 1).contains("@") || list.get(list.size() - 1).contains("http")) {

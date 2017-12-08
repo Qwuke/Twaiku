@@ -20,42 +20,49 @@ public class HaikuSyllableCoutingFromArray {
 		int thirdSyllableNum=0;
 
 		// Starting point
-		for (i = 0; syllableCount <= 17; i++) {
+		for (i = 0; syllableCount <= 17&&i<5; i++) {
 			if (words.length>i) {
 			//Use placeholder vars such that we only 
 				firstSyllableNum = rhymer.getSyllables(words[i]);
-				if (firstSyllableNum == 0) {
-					System.out.println("String" + words[i] + "not found");
-					return false;
-				};
+				
+			}
+			if (firstSyllableNum == 0) {
+				//System.out.println("String" + words[i] + "not found");
+				System.out.println("This is not a haiku");
+				return false;
 			}
 			if (syllableCount == line1) {
 
 				System.out.println("first 5 check");
-				for (int j = i; syllableCount <= 17; j++) {
+				for (int j = i; syllableCount <= 17&&j<12; j++) {
 					if (words.length>j) {
 						secondSyllableNum = rhymer.getSyllables(words[j]);
-						if (secondSyllableNum == 0) {
-							System.out.println("String" + words[j] + "not found");
-							return false;
-						};
+						
 					}
+					if (secondSyllableNum == 0) {
+						//System.out.println("String" + words[j] + "not found");
+						System.out.println("This is not a haiku");
+						return false;
+					};
 					if (syllableCount == line2) {
 
-						System.out.println("second 5 check");
-						for (int r = j; syllableCount <= 17; r++) {
+						//System.out.println("second 5 check");
+						for (int r = j; syllableCount <= 17&&r<17; r++) {
 							if (words.length>r) {
 								thirdSyllableNum = rhymer.getSyllables(words[r]);
 								if (thirdSyllableNum == 0) {
-									System.out.println("String" + words[r] + "not found");
+								//	System.out.println("String" + words[r] + "not found");
+									System.out.println("This is not a haiku");
 									return false;
 								};
 							}
-							if (syllableCount == line3&&(words.length-1==r)) {
-								System.out.println("We FUCKING DID IT");
+							System.out.println("r =" + r);
+							if (syllableCount == line3&&(words.length==r)) {
+								System.out.println("This is a Haiku");								
 								return true;
-							} else if ((syllableCount + thirdSyllableNum) > line3) {
-								System.out.println("failed second 5 check");
+							} else if ((syllableCount + thirdSyllableNum) > line3||thirdSyllableNum <= 0) {
+								//System.out.println("failed second 5 check");
+								System.out.println("This is not a haiku");
 								return false;
 							} else {
 								syllableCount += thirdSyllableNum;
@@ -64,7 +71,8 @@ public class HaikuSyllableCoutingFromArray {
 						}
 
 					} else if ((syllableCount + secondSyllableNum) > line2) {
-						System.out.println("failed 7 check");
+						//System.out.println("failed 7 check");
+						System.out.println("This is not a haiku");
 						return false;
 					} else {
 						syllableCount += secondSyllableNum;
@@ -74,7 +82,8 @@ public class HaikuSyllableCoutingFromArray {
 				}
 
 			} else if ((syllableCount + firstSyllableNum) > line1) {
-				System.out.println("failed line1 test");
+				//System.out.println("failed line1 test");
+				System.out.println("This is not a haiku");
 				return false;
 			} else {
 				syllableCount += firstSyllableNum;
@@ -82,6 +91,7 @@ public class HaikuSyllableCoutingFromArray {
 
 			}
 		}
+		System.out.println("This is not a haiku");
 		return false;
 
 	}

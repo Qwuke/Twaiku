@@ -66,14 +66,13 @@ public class HomeController {
 	// @RequestMapping("/user")
 	@RequestMapping("/user")
 	public String user() throws IOException {
-
+		Rhymer rhymer = CmuDictionary.loadRhymer();
 		/*
 		 * ArrayList<String> words = new ArrayList<String>(); words.add("Hi");
 		 * words.add("hello"); words.add("BYE");
 		 */
 
 		// working code below
-		Rhymer rhymer = CmuDictionary.loadRhymer();
 		// System.out.println(rhymer.getSyllables("mr"));
 		// System.out.println(rhymer.getSyllables("mr.matt"));
 		// System.out.println(rhymer.getSyllables("Help...me"));
@@ -117,23 +116,38 @@ public class HomeController {
 			@Override
 			public void onStatus(Status status) {
 
-				if (postCount == 0) {
+				/*if (postCount == 0) {
 					postCount++;
 					// TwaikuBotController.botTweetPost(status);
-				}
+				}*/
 				// if (tweetCount <= 1) {
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
 						&& (status.isRetweet() == false) && status.getText().length() < 255) {
 					tweetCount++;
+					try {
+						String[] wordsInTweet = tweetSweeper.tweets(status.getText());
+						if (wordsInTweet.length>1) {
+							if (HaikuSyllableCoutingFromArray.count(wordsInTweet, rhymer)) {
+								updateTwaikuDatabaseTweets(status.getId(), status.getUser().getScreenName(),
+										regexChecker(status.getText()));
 
-					updateTwaikuDatabaseTweets(status.getId(), status.getUser().getScreenName(),
-							regexChecker(status.getText()));
+								System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
+										+ status.getText().length() + " - " + status.getText() + " - GETID:" + status.getId()
+										+ " TweetCount" + tweetCount);
+							};
+						}
+						
+						
+						
 
-					System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
-							+ status.getText().length() + " - " + status.getText() + " - GETID:" + status.getId()
-							+ " TweetCount" + tweetCount);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 
 				}
+				
 
 			}
 
@@ -194,9 +208,11 @@ public class HomeController {
 	}
 	@RequestMapping({ "/index", "/" })
 	public ModelAndView index(Model model) throws IOException {
-		System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega dog mega mega dog")));
-		System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega mega dog mega mega dog")));
-		System.out.println(eachWord(tweetSweeper.tweets("One, one one, one one. One #one @howdy butts...hi hi.")));
+		//Rhymer rhymer = CmuDictionary.loadRhymer();
+		//System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega dog mega mega dog")));
+		//System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega mega dog mega mega dog")));
+		//System.out.println(eachWord(tweetSweeper.tweets("#oh one one, one one. One one howdy butts...hi hi. hey there partner #oh")));
+		//HaikuSyllableCoutingFromArray.count(tweetSweeper.tweets("@#oh one one, one one. One one howdy @butts...hi hi. hey there partner #oh http"), rhymer);
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
 
