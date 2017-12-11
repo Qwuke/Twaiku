@@ -12,7 +12,7 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">Megadog69</property>
+		<property name="hibernate.connection.password">Redwings25</property>
 		<!-- The show-sql property set to true is used for testing and allows us 
 			to see the hibernate queries in our console -->
 		<property name="show_sql">true</property>
