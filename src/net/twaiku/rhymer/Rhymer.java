@@ -47,12 +47,15 @@ public abstract class Rhymer {
 		// The word doesn't exist in our dictionary
 		List<WordVariant> wordVariants = getWordVariants(lookupWord);
 		if (wordVariants == null) {
-			System.out.println(word + ": ");
-			System.out.println("Not in our dictionary");
+			//commenting out print line
+			//System.out.println(word + ": ");
+			//System.out.println("Not in our dictionary");
 			return 0;
 		} else {
 			//OTHERWISE we start looking for syllables in the word variant
-			System.out.println(word + ": ");
+			
+			// Commenting out Print line
+			//System.out.println(word + ": ");
 			WordVariant firstVariant= wordVariants.get(0);
 			
 			//Count syllables in first variant

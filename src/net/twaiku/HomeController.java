@@ -38,7 +38,7 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "@Supermari64 what a waste of money: smh!!";
+	public String words = "one two three four five one two three four five six six one two three four five";
 
 	public int tweetCount;
 	public int postCount;
@@ -46,8 +46,7 @@ public class HomeController {
 
 	public String updateTwaikuDatabaseTweets(long longTweetId, String tweetName, String tweetString) {
 
-		// Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		// SessionFactory sessionFactory = config.buildSessionFactory();
+		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		TwaikuDTO newTwaikuDTO = new TwaikuDTO();
@@ -63,7 +62,7 @@ public class HomeController {
 		return "";
 	}
 
-	// @RequestMapping("/user")
+
 	@RequestMapping("/user")
 	public String user() throws IOException {
 		Rhymer rhymer = CmuDictionary.loadRhymer();
@@ -121,10 +120,16 @@ public class HomeController {
 					// TwaikuBotController.botTweetPost(status);
 				}*/
 				// if (tweetCount <= 1) {
+				
+				
+				
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
 						&& (status.isRetweet() == false) && status.getText().length() < 255) {
 					tweetCount++;
 					try {
+						
+						
+						
 						String[] wordsInTweet = tweetSweeper.tweets(status.getText());
 						if (wordsInTweet.length>1) {
 							if (HaikuSyllableCoutingFromArray.count(wordsInTweet, rhymer)) {
@@ -137,11 +142,10 @@ public class HomeController {
 							};
 						}
 						
-						
-						
+												
 
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 					
@@ -180,9 +184,7 @@ public class HomeController {
 		};
 		twitterStream.addListener(listener);
 		twitterStream.sample();
-		// FilterQuery fq = new FilterQuery();
-		// fq.language("en");
-		// twitterStream.filter();
+	
 		return "user";
 	}
 
@@ -192,7 +194,7 @@ public class HomeController {
 		str2Check = "";
 		while (regexMatcher.find()) {
 			if (regexMatcher.group().length() != 0) {
-				// System.out.print(regexMatcher.group());
+				
 				str2Check += regexMatcher.group();
 
 			}
@@ -216,39 +218,7 @@ public class HomeController {
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
 
-		// Query q = session.createQuery("from TwaikuDTO");
-		// List<TwaikuDTO> g1 = q.list();
-		// System.out.println("data loaded here");
-		// for(TwaikuDTO g2:g1)
-		// {
-		//
-		//
-		// //System.out.println("this is the second query");
-		// Query q2 = session.createQuery("select g.TweetID,g.UserName,g.TweetString
-		// from TwaikuDTO g ");
-		// List l1 = q2.list();
-		// Iterator i = l1.iterator();
-		// while(i.hasNext())
-		// {
-		// Object[] obj = (Object[])i.next();
-		// long tweetID = (long)obj[0];
-		// String name = (String)obj[1];
-		// String tweet = (String)obj[2];
-		// System.out.println(tweetID);
-		// System.out.println(name);
-		// System.out.println(tweet);
-		//
-		// }
-		//
-		//
-		//
-		//
-		// session.flush();
-		// session.close();
-		// }
-		//
-		//
-
+	
 		return new ModelAndView("index", "tweetTable", list);
 	}
 

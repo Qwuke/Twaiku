@@ -14,7 +14,7 @@ public class tweetSweeper {
 	public static String[] tweets(String tweets) throws IOException {
 		ArrayList<String> list = new ArrayList<String>();
 		
-		//tweets.replaceAll("(?=\\p{Punct})|(?<=\\p{Punct})", " ");
+		
 
 		if (tweets.contains("http")) {
 			
@@ -58,7 +58,7 @@ public class tweetSweeper {
 
 		for (int numCounter : numList) {
 			totalCount = numCounter + totalCount;
-			// System.out.println(totalCount);
+			
 		}
 		return totalCount;
 
