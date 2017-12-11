@@ -2,13 +2,19 @@ package net.twaiku;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import net.twaiku.cmu.CmuDictionary;
+import net.twaiku.dto.TwaikuDTO;
 import net.twaiku.rhymer.Rhymer;
 
 public class HaikuSyllableCoutingFromArray {
 
-	public static boolean count(String[] words, Rhymer rhymer) throws IOException {
+	public static int[] count(String[] words, Rhymer rhymer) throws IOException {
 
 		int j = 0;
 		int r = 0;
@@ -21,6 +27,7 @@ public class HaikuSyllableCoutingFromArray {
 		int firstSyllableNum = 0;
 		int secondSyllableNum = 0;
 		int thirdSyllableNum = 0;
+		int[] haikuAndIndexes = {0, i, j, r};
 
 		// Starting point
 		for (i = 0; syllableCount <= 17 && i < 5; i++) {
@@ -32,7 +39,8 @@ public class HaikuSyllableCoutingFromArray {
 			if (firstSyllableNum == 0) {
 
 				System.out.println("This is not a haiku");
-				return false;
+				
+				return haikuAndIndexes;
 			}
 			if (syllableCount == line1) {
 
@@ -44,7 +52,7 @@ public class HaikuSyllableCoutingFromArray {
 					if (secondSyllableNum == 0) {
 						// System.out.println("String" + words[j] + "not found");
 						System.out.println("This is not a haiku");
-						return false;
+						return haikuAndIndexes;
 					}
 					;
 					if (syllableCount == line2) {
@@ -56,19 +64,24 @@ public class HaikuSyllableCoutingFromArray {
 								if (thirdSyllableNum == 0) {
 									// System.out.println("String" + words[r] + "not found");
 									System.out.println("This is not a haiku");
-									return false;
+									return haikuAndIndexes;
 								}
-								;
+								
 							}
 							// System.out.println("r =" + r);
 							if (syllableCount == line3 && (words.length == r)) {
 								System.out.println("This is a Haiku");
+								
 								printer(i, j, r, words);
-								return true;
+								haikuAndIndexes[0] = 1;
+								haikuAndIndexes[1] = i;
+								haikuAndIndexes[2] = j;
+								haikuAndIndexes[3] = r;
+								return haikuAndIndexes;
 							} else if ((syllableCount + thirdSyllableNum) > line3 || thirdSyllableNum <= 0) {
 								// System.out.println("failed second 5 check");
 								System.out.println("This is not a haiku");
-								return false;
+								return haikuAndIndexes;
 							} else {
 								syllableCount += thirdSyllableNum;
 								// System.out.println(syllableCount);
@@ -78,7 +91,7 @@ public class HaikuSyllableCoutingFromArray {
 					} else if ((syllableCount + secondSyllableNum) > line2) {
 						// System.out.println("failed 7 check");
 						System.out.println("This is not a haiku");
-						return false;
+						return haikuAndIndexes;
 					} else {
 						syllableCount += secondSyllableNum;
 						// System.out.println(syllableCount);
@@ -89,7 +102,7 @@ public class HaikuSyllableCoutingFromArray {
 			} else if ((syllableCount + firstSyllableNum) > line1) {
 				// System.out.println("failed line1 test");
 				System.out.println("This is not a haiku");
-				return false;
+				return haikuAndIndexes;
 			} else {
 				syllableCount += firstSyllableNum;
 				// System.out.println(syllableCount);
@@ -98,36 +111,39 @@ public class HaikuSyllableCoutingFromArray {
 		}
 
 		System.out.println("This is not a haiku");
-		return false;
+		return haikuAndIndexes;
 	}
 
-	public static String printer(int i, int j, int r, String[] words) {
+	public static String printer(int l, int m, int n, String[] words) {
 		String[] formated = new String[words.length];
 		int k = 0;
+		String tempString = "";
 
-		for (k = 0; k <= i-1 ; k++) {
+		for (k = 0; k <= l-1 ; k++) {
 			// System.out.print(words[k] + " ");
 			formated[k] = words[k];
 
 		}
-		formated[i-1] = words[i-1] + "\n\n";
+		formated[l-1] = words[l-1] + "\n\n";
 
-		for (k =k; k <= j-1 ; k++) {
+		for (k =k; k <= m-1 ; k++) {
 			// System.out.print(words[k] + " ");
 			formated[k] = words[k];
 		}
-		formated[j-1] = words[j-1] + "\n\n";
+		formated[m-1] = words[m-1] + "\n\n";
 
-		for (k = k; k <= r-1 ; k++) {
+		for (k = k; k <= n-1 ; k++) {
 			// System.out.print(words[k] + " ");
 			formated[k] = words[k];
 
 		}
 
 		for (String temp : formated) {
-			System.out.print(temp + " ");
+			 tempString += temp + " ";
 		}
 
-		return formated.toString();
+		return tempString;
 	}
+	
+	
 }

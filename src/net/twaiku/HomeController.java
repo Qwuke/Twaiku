@@ -38,7 +38,7 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "one two three four five one two three four five six six one two three four five";
+	public String words = "Green and speckled legs, Hop on logs and lily pads Splash in cool water.";
 
 	public int tweetCount;
 	public int postCount;
@@ -46,7 +46,6 @@ public class HomeController {
 
 	public String updateTwaikuDatabaseTweets(long longTweetId, String tweetName, String tweetString) {
 
-		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		TwaikuDTO newTwaikuDTO = new TwaikuDTO();
@@ -62,46 +61,10 @@ public class HomeController {
 		return "";
 	}
 
-
 	@RequestMapping("/user")
 	public String user() throws IOException {
 		Rhymer rhymer = CmuDictionary.loadRhymer();
-		/*
-		 * ArrayList<String> words = new ArrayList<String>(); words.add("Hi");
-		 * words.add("hello"); words.add("BYE");
-		 */
 
-		// working code below
-		// System.out.println(rhymer.getSyllables("mr"));
-		// System.out.println(rhymer.getSyllables("mr.matt"));
-		// System.out.println(rhymer.getSyllables("Help...me"));
-		// System.out.println(rhymer.getSyllables("Mr.Dobalina"));
-
-		// working code below
-		// tweetSweeper.countNum returns the total count of the syllables in the tweet
-
-		// tweetSweeper.wordCheck returns a list of syllables in each word in the String
-		// System.out.println(tweetSweeper.wordCheck(tweetSweeper.tweets(words)));
-		// tweetSweeper.tweets returns a list of the words in a String. Also removes @
-		// and http from both ends of the String
-		// also checks if the String has @ or http in the middle which if true will
-		// remove that tweet from our arrayList
-		// words is a string made at the top of the program to test taking in a tweet
-		// System.out.println(tweetSweeper.tweets(words));
-
-		/*
-		 * for (RhymeResult result : results) { System.out.println("Results for " +
-		 * result.variantNumber + ":");
-		 * 
-		 * System.out.println("  Strict matches:"); System.out.println("    " +
-		 * Arrays.toString(result.strictRhymes)); System.out.println();
-		 * System.out.println("  One-syllable matches:"); System.out.println("    " +
-		 * Arrays.toString(result.oneSyllableRhymes)); System.out.println();
-		 * System.out.println("  Two-syllable matches:"); System.out.println("    " +
-		 * Arrays.toString(result.twoSyllableRhymes)); System.out.println();
-		 * System.out.println("  Three-syllable matches:"); System.out.println("    " +
-		 * Arrays.toString(result.threeSyllableRhymes)); }
-		 */
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
 		configurationBuilder.setTweetModeExtended(true);
@@ -115,43 +78,38 @@ public class HomeController {
 			@Override
 			public void onStatus(Status status) {
 
-				/*if (postCount == 0) {
-					postCount++;
-					// TwaikuBotController.botTweetPost(status);
-				}*/
+				/*
+				 * if (postCount == 0) { postCount++; //
+				 * TwaikuBotController.botTweetPost(status); }
+				 */
 				// if (tweetCount <= 1) {
-				
-				
-				
+
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
 						&& (status.isRetweet() == false) && status.getText().length() < 255) {
 					tweetCount++;
 					try {
-						
-						
-						
+
 						String[] wordsInTweet = tweetSweeper.tweets(status.getText());
-						if (wordsInTweet.length>1) {
-							if (HaikuSyllableCoutingFromArray.count(wordsInTweet, rhymer)) {
-								updateTwaikuDatabaseTweets(status.getId(), status.getUser().getScreenName(),
-										regexChecker(status.getText()));
+						if (wordsInTweet.length > 1) {
+							int[] indexNum = (HaikuSyllableCoutingFromArray.count(wordsInTweet, rhymer));
+							
+							if (indexNum[0] == 1) {
+								updateTwaikuDatabaseTweets((status.getId()), status.getUser().getScreenName(),
+										regexChecker(HaikuSyllableCoutingFromArray.printer(indexNum[1], indexNum[2],
+												indexNum[3], tweetSweeper.tweets(status.getText()))));
 
 								System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
-										+ status.getText().length() + " - " + status.getText() + " - GETID:" + status.getId()
-										+ " TweetCount" + tweetCount);
-							};
+										+ status.getText().length() + " - " + status.getText() + " - GETID:"
+										+ status.getId() + " TweetCount" + tweetCount);
+							}
 						}
-						
-												
 
 					} catch (IOException e) {
-						
+
 						e.printStackTrace();
 					}
-					
 
 				}
-				
 
 			}
 
@@ -184,7 +142,7 @@ public class HomeController {
 		};
 		twitterStream.addListener(listener);
 		twitterStream.sample();
-	
+
 		return "user";
 	}
 
@@ -194,31 +152,47 @@ public class HomeController {
 		str2Check = "";
 		while (regexMatcher.find()) {
 			if (regexMatcher.group().length() != 0) {
-				
+
 				str2Check += regexMatcher.group();
 
 			}
 		}
 		return str2Check;
 	}
+
 	public String eachWord(String[] words) {
 		String last = "";
-		for(String s:words) {
-		 last+=(s + ",");
+		for (String s : words) {
+			last += (s + ",");
 		}
 		return last;
 	}
+
+	public String stringArrayToString(String[] words) {
+		String arrayToString = "";
+		for (String temp : words) {
+			arrayToString += temp + " ";
+		}
+
+		return arrayToString;
+
+	}
+
 	@RequestMapping({ "/index", "/" })
 	public ModelAndView index(Model model) throws IOException {
-		//Rhymer rhymer = CmuDictionary.loadRhymer();
-		//System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega dog mega mega dog")));
-		//System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega mega dog mega mega dog")));
-		//System.out.println(eachWord(tweetSweeper.tweets("#oh one one, one one. One one howdy butts...hi hi. hey there partner #oh")));
-		//HaikuSyllableCoutingFromArray.count(tweetSweeper.tweets("@#oh one one, one one. One one howdy @butts...hi hi. hey there partner #oh http"), rhymer);
+		// Rhymer rhymer = CmuDictionary.loadRhymer();
+		// System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega
+		// dog mega mega dog")));
+		// System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega
+		// mega dog mega mega dog")));
+		// System.out.println(eachWord(tweetSweeper.tweets("#oh one one, one one. One
+		// one howdy butts...hi hi. hey there partner #oh")));
+		// HaikuSyllableCoutingFromArray.count(tweetSweeper.tweets("@#oh one one, one
+		// one. One one howdy @butts...hi hi. hey there partner #oh http"), rhymer);
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
+		
 
-	
 		return new ModelAndView("index", "tweetTable", list);
 	}
 
