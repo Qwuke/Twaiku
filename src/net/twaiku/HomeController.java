@@ -89,14 +89,14 @@ public class HomeController {
 					tweetCount++;
 					try {
 
-						String[] wordsInTweet = tweetSweeper.tweets(status.getText());
+						String[] wordsInTweet = tweetSweeper.sanitizeRawTweet(status.getText());
 						if (wordsInTweet.length > 1) {
-							int[] indexNum = (HaikuSyllableCoutingFromArray.count(wordsInTweet, rhymer));
+							int[] indexNum = (HaikuDetector.ifHaiku(wordsInTweet, rhymer));
 							
 							if (indexNum[0] == 1) {
 								updateTwaikuDatabaseTweets((status.getId()), status.getUser().getScreenName(),
-										regexChecker(HaikuSyllableCoutingFromArray.printer(indexNum[1], indexNum[2],
-												indexNum[3], tweetSweeper.tweets(status.getText()))));
+										regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2],
+												indexNum[3], tweetSweeper.sanitizeRawTweet(status.getText()))));
 
 								System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
 										+ status.getText().length() + " - " + status.getText() + " - GETID:"
