@@ -10,8 +10,9 @@
 
 <title>Twaiku: a random sample of the human condition</title>
 <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Glegoo">
 </head>
-<body>
+<body style="font-family: 'Glegoo', serif !important">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 30px">
   <a class="navbar-brand mx-auto" href="#">Twaiku</a>
 </nav>
@@ -21,27 +22,24 @@
     <span class="navbar-toggler-icon"></span>
   </button> -->
 
-  <div class="collapse navbar-collapse" id="navbarColor01" >
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li> -->
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-    </ul>
-    <!-- <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form> -->
-  </div>
-</nav>
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav mx-auto">
+				<li class="nav-item active"><a class="nav-link" href="#">Home
+						<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="#">Recent</a></li>
+				<!-- <li class="nav-item">
+        		<a class="nav-link" href="#">Pricing</a>
+      			</li> -->
+				<li class="nav-item"><a class="nav-link" href="#">About</a></li>
+				<li> 
+			</ul>
+			<form class="form-inline my-lg-0 pl-0 ml-0 mt-0 pt-0 mt-md-0">
+      		<input class="form-control mr-sm-2" type="text" placeholder="Search">
+      		<button class="btn btn-secondary my-sm-0" type="submit">Search</button>
+    		</form>
+		</div>
+	</nav>
 	<div class="container">
 	<table class ="table table-hover">
 		<tbody>
