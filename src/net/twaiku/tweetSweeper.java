@@ -30,7 +30,7 @@ public class tweetSweeper {
 			return list.toArray(new String[list.size()]);
 		}
 		
-		for (String word : rawTweetText.split(("[^a-zA-Z'@]"))) {
+		for (String word : rawTweetText.split(("[^a-zA-Z'@0-9]"))) {
 			if (!word.equals("")) {
 				list.add(word);
 			}
