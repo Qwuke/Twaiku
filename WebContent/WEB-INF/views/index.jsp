@@ -42,8 +42,8 @@
     </form> -->
   </div>
 </nav>
-
-	<table>
+	<div class="container">
+	<table class ="table table-hover">
 		<tbody>
 			<c:forEach var="myVar" items="${tweetTable}">
 				<tr scope=row>
@@ -57,6 +57,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
+	</div>
 </body>
 </html>
