@@ -38,7 +38,7 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "Green 1one speckled legs, Hop on 42logs and lily pads Splash in cool water.";
+	public String words = "Green one speckled legs, Hop on logs and 42 Splash in cool water.";
 
 	public int tweetCount;
 	public int postCount;
@@ -89,7 +89,7 @@ public class HomeController {
 					tweetCount++;
 					try {
 
-						String[] wordsInTweet = tweetSweeper.sanitizeRawTweet(words);
+						String[] wordsInTweet = tweetSweeper.sanitizeRawTweet(status.getText());
 						if (wordsInTweet.length > 1) {
 							int[] indexNum = (HaikuDetector.ifHaiku(wordsInTweet, rhymer));
 							
