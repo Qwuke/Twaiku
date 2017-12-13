@@ -125,13 +125,13 @@ public class HaikuDetector {
 			formated[k] = words[k];
 
 		}
-		formated[l-1] = words[l-1] + "\n\n";
+		formated[l-1] = words[l-1] + "<br><br>";
 
 		for (k =k; k <= m-1 ; k++) {
 			// System.out.print(words[k] + " ");
 			formated[k] = words[k];
 		}
-		formated[m-1] = words[m-1] + "\n\n";
+		formated[m-1] = words[m-1] +"<br><br>";
 
 		for (k = k; k <= n-1 ; k++) {
 			// System.out.print(words[k] + " ");
