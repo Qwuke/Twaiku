@@ -61,7 +61,7 @@ public class HomeController {
 		return "";
 	}
 
-	@RequestMapping("/user")
+	@RequestMapping("user")
 	public String user() throws IOException {
 		Rhymer rhymer = CmuDictionary.loadRhymer();
 
@@ -78,12 +78,7 @@ public class HomeController {
 			@Override
 			public void onStatus(Status status) {
 
-				/*
-				 * if (postCount == 0) { postCount++; //
-				 * TwaikuBotController.botTweetPost(status); }
-				 */
-				// if (tweetCount <= 1) {
-
+		
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
 						&& (status.isRetweet() == false) && status.getText().length() < 255) {
 					tweetCount++;
@@ -92,12 +87,16 @@ public class HomeController {
 						String[] wordsInTweet = tweetSweeper.sanitizeRawTweet(status.getText());
 						if (wordsInTweet.length > 1) {
 							int[] indexNum = (HaikuDetector.ifHaiku(wordsInTweet, rhymer));
-							
+
 							if (indexNum[0] == 1) {
 								updateTwaikuDatabaseTweets((status.getId()), status.getUser().getScreenName(),
-										regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2],
-												indexNum[3], tweetSweeper.sanitizeRawTweet(status.getText()))));
-
+										regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2], indexNum[3],
+												tweetSweeper.sanitizeRawTweet(status.getText()))));
+								
+								
+								TwaikuBotController.botTweetPost(status, replaceBreaks(getLastTweet(status.getId())));;
+								
+								
 								System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
 										+ status.getText().length() + " - " + status.getText() + " - GETID:"
 										+ status.getId() + " TweetCount" + tweetCount);
@@ -117,7 +116,7 @@ public class HomeController {
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				// System.out.println("Got a status deletion notice id:" +
 				// statusDeletionNotice.getStatusId());
-			}
+		}
 
 			@Override
 			public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
@@ -145,7 +144,6 @@ public class HomeController {
 
 		return "user";
 	}
-
 	public static String regexChecker(String str2Check) {
 		Pattern checkRegex = Pattern.compile("[a-zA-Z0-9\\t\\n ./<>?;:\"'`!@#$%^&*()\\[\\]{}_+=|\\\\-]");
 		Matcher regexMatcher = checkRegex.matcher(str2Check);
@@ -180,20 +178,21 @@ public class HomeController {
 
 	@RequestMapping({ "/index", "/" })
 	public ModelAndView index(Model model) throws IOException {
-		// Rhymer rhymer = CmuDictionary.loadRhymer();
-		// System.out.println(eachWord(tweetSweeper.tweets("Mega dog mega mega mega mega
-		// dog mega mega dog")));
-		// System.out.println(eachWord(tweetSweeper.tweets("Mega mega dog mega mega mega
-		// mega dog mega mega dog")));
-		// System.out.println(eachWord(tweetSweeper.tweets("#oh one one, one one. One
-		// one howdy butts...hi hi. hey there partner #oh")));
-		// HaikuSyllableCoutingFromArray.count(tweetSweeper.tweets("@#oh one one, one
-		// one. One one howdy @butts...hi hi. hey there partner #oh http"), rhymer);
+	
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
-		
 
 		return new ModelAndView("index", "tweetTable", list);
+	}
+	@RequestMapping("search")
+	public ModelAndView search(Model model) throws IOException {
+		String errorMessage = " ";
+		
+		if ((SearchUserTimeLine.searchMethod("TwaikuGC") == false)){
+			errorMessage = " Sorry we couldn't find your timeline.";
+		}
+
+		return new ModelAndView("search", "search", errorMessage);
 	}
 
 	private ArrayList<TwaikuDTO> getAllTweets() {
@@ -207,4 +206,41 @@ public class HomeController {
 		return list;
 	}
 
+	private String getLastTweet(Long tweetID) {
+		
+		String botTweetHaiku = "";
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		//Criteria crit = session.createCriteria(TwaikuDTO.class);
+		
+		  Query q2 = session.createQuery("select TweetID , UserName,  TweetString from TwaikuDTO WHERE id =" + tweetID);
+	        List l1 = q2.list();
+	        Iterator i = l1.iterator();
+	        while(i.hasNext())
+	        {
+	        Object[] obj = (Object[])i.next();
+	        long id = (long)obj[0];
+	        String name = (String)obj[1];
+	        botTweetHaiku = (String)obj[2];
+
+	        System.out.println(id);
+	        System.out.println(name);
+	        System.out.println(botTweetHaiku);
+	        }
+		
+		
+	    session.flush();
+		
+		tx.commit();
+		
+		session.close();	
+	
+		return botTweetHaiku;
+
+	}
+	public static String replaceBreaks(String replaceText) {
+		replaceText = replaceText.replaceAll("<br>", "\n");
+		
+		return replaceText;
+	}
 }

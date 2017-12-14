@@ -7,6 +7,6 @@
 <title>User</title>
 </head>
 <body>
- 
+ ${search}
 </body>
 </html>

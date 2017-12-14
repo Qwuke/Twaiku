@@ -20,7 +20,9 @@
 	</bean>
 	
 	
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/resources/**" location="/resources/styles.css" />
+	<mvc:resources mapping="/images/**" location="/images/Ticon.png" />
+	
 
 	<mvc:annotation-driven />
 </beans>
