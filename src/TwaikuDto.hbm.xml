@@ -19,7 +19,12 @@
 		<property name="TweetString">
 			<column name="TweetString" sql-type="varchar(255)" length="255"></column>
 		</property>
-		
+		<property name="ProfileImageLink">
+			<column name="ProfileImageLink" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="UserDisplayName">
+			<column name="UserDisplayName" sql-type="varchar(255)" length="255"></column>
+		</property>
 
 
 

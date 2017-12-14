@@ -66,12 +66,12 @@
 										<a
 											href="https://twitter.com/${myVar.userName}/status/${myVar.tweetID}"
 											class="toAccount" target="_blank" title="Go To Profile">
-											<img class="userIcon" src="https://fillmurray.com/50/50"
+											<img class="userIcon" src="${myVar.profileImageLink}"
 											alt="Profile" />
 										</a>
 									</div>
 									<div class="userInfo">
-										<div class="userName">Bill Murray</div>
+										<div class="userName">${myVar.userDisplayName}</div>
 										<a href="https://twitter.com/${myVar.userName}">
 											<div class="userHandle">@${myVar.userName}</div>
 										</a>
@@ -124,6 +124,8 @@
             <div class="retweet">51 retweets</div>
         </div> -->
 	</div>
+	
+	</script>
 </body>
 
 </html>

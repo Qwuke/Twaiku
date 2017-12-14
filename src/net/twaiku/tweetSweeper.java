@@ -152,11 +152,6 @@ public class tweetSweeper {
 		// remove extra spaces!
 		return result.replaceAll("^\\s+", "").replaceAll("\\b\\s{2,}\\b", " ");
 	}
-	public static String removeBreaksAndReplace(String filterTweetString) {
-		
-		
-		
-		return filterTweetString;
-	}
+	
 
 }

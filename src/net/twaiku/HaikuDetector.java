@@ -120,6 +120,7 @@ public class HaikuDetector {
 		int k = 0;
 		String tempString = "";
 
+		
 		for (k = 0; k <= l-1 ; k++) {
 			// System.out.print(words[k] + " ");
 			formated[k] = words[k];
@@ -139,6 +140,9 @@ public class HaikuDetector {
 
 		}
 
+		formated[0] = "\"" + formated[0];
+		formated[formated.length-1] += "\"";
+		
 		for (String temp : formated) {
 			 tempString += temp + " ";
 		}

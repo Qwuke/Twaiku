@@ -2,6 +2,7 @@ package net.twaiku;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -44,7 +45,7 @@ public class HomeController {
 	public int postCount;
 	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-	public String updateTwaikuDatabaseTweets(long longTweetId, String tweetName, String tweetString) {
+	public String updateTwaikuDatabaseTweets(long longTweetId, String tweetName, String tweetString , String profileImageLink, String userDisplayName) {
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -53,6 +54,8 @@ public class HomeController {
 		newTwaikuDTO.setTweetID(longTweetId);
 		newTwaikuDTO.setUserName(tweetName);
 		newTwaikuDTO.setTweetString(tweetString);
+		newTwaikuDTO.setProfileImageLink(profileImageLink);
+		newTwaikuDTO.setUserDisplayName(userDisplayName);
 
 		session.save(newTwaikuDTO);
 		tx.commit();
@@ -77,8 +80,12 @@ public class HomeController {
 		StatusListener listener = new StatusListener() {
 			@Override
 			public void onStatus(Status status) {
-
-		
+			
+			
+				//System.out.println(status.getUser().getProfileImageURLHttps());	
+				//System.out.println(status.getUser().getName());
+				
+				
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
 						&& (status.isRetweet() == false) && status.getText().length() < 255) {
 					tweetCount++;
@@ -91,7 +98,8 @@ public class HomeController {
 							if (indexNum[0] == 1) {
 								updateTwaikuDatabaseTweets((status.getId()), status.getUser().getScreenName(),
 										regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2], indexNum[3],
-												tweetSweeper.sanitizeRawTweet(status.getText()))));
+												tweetSweeper.sanitizeRawTweet(status.getText()))),
+										status.getUser().getProfileImageURLHttps(),regexChecker(status.getUser().getName()));
 								
 								
 								TwaikuBotController.botTweetPost(status, replaceBreaks(getLastTweet(status.getId())));;
@@ -181,6 +189,7 @@ public class HomeController {
 	
 
 		ArrayList<TwaikuDTO> list = getAllTweets();
+		Collections.reverse(list);
 
 		return new ModelAndView("index", "tweetTable", list);
 	}
