@@ -25,12 +25,13 @@ public class tweetSweeper {
 		//lookup as much as possible.
 		//Return empty arraylist if contains haikuable words at some point. Otherwise, return sanitized text.
 		ArrayList<String> list = new ArrayList<String>();
+		String[] arry = rawTweetText.split(" ");
 
 		if (rawTweetText.contains("http")) {
 			return list.toArray(new String[list.size()]);
 		}
 		
-		for (String word : rawTweetText.split(("[^a-zA-Z'’@0-9]"))) {
+		for (String word : rawTweetText.split(("[^a-zA-Z'ï¿½@0-9]"))) {
 			if (!word.equals("")) {
 				list.add(word);
 			}
@@ -52,7 +53,31 @@ public class tweetSweeper {
 		if (list.contains("@") ) {
 			list.clear();
 		}
+		
+		ArrayList<String> nList = new ArrayList<String>();
+		
+		for(int i = 0; i < arry.length; i++) {
+			nList.add(arry[i]);
+		}
+		
+		for(int k = 0; k < nList.size(); k++) {
+			if(isNumeric(nList.get(k))) {
+				if(Integer.parseInt(nList.get(k)) < 1000) {
+					System.out.println(convertLessThanOneThousand(Integer.parseInt(nList.get(k))));
+				}
+				else if(Integer.parseInt(nList.get(k)) >= 1000) {
+					System.out.println(convert(Integer.parseInt(nList.get(k))));
+				}
+			}
+		}
+		
+		
 		return list.toArray(new String[list.size()]);
+	}
+	
+	public static boolean isNumeric(String str)
+	{
+	  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
 	}
 
 	public static int countNum(ArrayList<Integer> numList) {
