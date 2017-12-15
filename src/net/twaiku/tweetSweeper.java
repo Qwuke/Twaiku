@@ -18,6 +18,14 @@ public class tweetSweeper {
 	private static final String[] numNames = { "", " one", " two", " three", " four", " five", " six", " seven",
 			" eight", " nine", " ten", " eleven", " twelve", " thirteen", " fourteen", " fifteen", " sixteen",
 			" seventeen", " eighteen", " nineteen" };
+	private static String[] badChars = { "@", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+	private static String[] badWords = { "ass", "asses", "assface", "assfaces", "asshole", "assholes", "bastard", "bastards", "bitch",
+			"bitches", "bitchy", "bullshit", "cocksucker", "cocksuckers", "cocksucking", "cunt", "cunts", "dickhead",
+			"dickheads", "faggot", "faggots", "fuc", "fuck", "fucked", "fuckedup", "fucker", "fuckers", "fucking",
+			"fuckoff", "fucks", "fuckup", "fuk", "fukker", "fukkers", "fuq", "goddamn", "goddamnit", "jackass",
+			"jackasses", "motherfucker", "motherfuckers", "motherfucking", "nigger", "niggers", "pussy", "shit",
+			"shithead", "shitheads", "shits", "shittier", "shittiest", "shitting", "shitty", "smartass", "smartasses",
+			"tities", "tits", "titties", "wiseass", "wiseasses"};
 
 	public static String[] sanitizeRawTweet(String rawTweetText) throws IOException {
 		//In this method we split the raw twitter text into seperate strings for words based, remove punctuation,
@@ -25,7 +33,8 @@ public class tweetSweeper {
 		//lookup as much as possible.
 		//Return empty arraylist if contains haikuable words at some point. Otherwise, return sanitized text.
 		ArrayList<String> list = new ArrayList<String>();
-		String[] arry = rawTweetText.split(" ");
+		
+		String[] arry = rawTweetText.replaceAll("’","'" ).split(" ");
 
 		if (rawTweetText.contains("http")) {
 			return list.toArray(new String[list.size()]);
@@ -50,26 +59,30 @@ public class tweetSweeper {
 
 		//More redudancy that may be added back later if we end up removing first conditional
 		//if (list.contains("@") || list.contains("http")) {
-		if (list.contains("@") ) {
+		for(String badWord:badChars) {
+		if (list.contains(badWord)) {
 			list.clear();
-		}
+			return list.toArray(new String[list.size()]);
+		}}
+		for(String badWord:badWords) {
+			for(int megadog = 0; megadog<list.size()-1; megadog++) {
+			if (list.get(megadog).equalsIgnoreCase(badWord)) {
+				list.clear();
+				return list.toArray(new String[list.size()]);
+		}}}
 		
-		ArrayList<String> nList = new ArrayList<String>();
 		
-		for(int i = 0; i < arry.length; i++) {
-			nList.add(arry[i]);
-		}
-		
-		for(int k = 0; k < nList.size(); k++) {
-			if(isNumeric(nList.get(k))) {
-				if(Integer.parseInt(nList.get(k)) < 1000) {
-					System.out.println(convertLessThanOneThousand(Integer.parseInt(nList.get(k))));
+		/* Commented out since it cannot handle for numbers larger than ints
+		 * (int k = 0; k < list.size(); k++) {
+			if(isNumeric(list.get(k))) {
+				if(Integer.parseInt(list.get(k)) < 1000) {
+					list.set(k,convertLessThanOneThousand(Integer.parseInt(list.get(k))));
 				}
-				else if(Integer.parseInt(nList.get(k)) >= 1000) {
-					System.out.println(convert(Integer.parseInt(nList.get(k))));
+				else if(Integer.parseInt(list.get(k)) >= 1000) {
+					list.set(k,convert(Integer.parseInt(list.get(k))));
 				}
 			}
-		}
+		} */
 		
 		
 		return list.toArray(new String[list.size()]);

@@ -27,7 +27,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary"
 		style="height: 50px">
 		<a class="navbar-brand mx-auto" href="#"
-			style="font-family: 'Bungee Shade', cursive">Twaiku</a>
+			style="font-family: 'Bungee Shade', cursive; font-size: 1.75em">Twaiku</a>
 	</nav>
 	<nav class="navbar navbar-expand-sm py-0 navbar-dark bg-primary">
 		<!-- <a class="navbar-brand" href="#">Twaiku</a>
@@ -41,15 +41,14 @@
 				<li class="nav-item active"><a class="nav-link" href="#">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Recent</a></li>
 				<!-- <li class="nav-item">
                           <a class="nav-link" href="#">Pricing</a>
                             </li> -->
-				<li class="nav-item"><a class="nav-link" href="#">About</a></li>
+				<li class="nav-item"><a class="nav-link" href="about">About</a></li>
 				<li>
 			</ul>
 			<form class="form-inline my-lg-0 pl-0 ml-0 mt-0 pt-0 mt-md-0">
-				<input class="form-control mr-sm-2" type="text" placeholder="Search">
+				<input class="form-control mr-sm-2 text-right" type="text" placeholder="Coming soon!">
 				<button class="btn btn-secondary my-sm-0" type="submit">Search</button>
 			</form>
 		</div>
@@ -123,9 +122,7 @@
             </div>
             <div class="retweet">51 retweets</div>
         </div> -->
-	</div>
 	
-	</script>
 </body>
 
 </html>

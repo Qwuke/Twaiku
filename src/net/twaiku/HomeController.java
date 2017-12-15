@@ -76,7 +76,6 @@ public class HomeController {
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 
 		TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
-
 		StatusListener listener = new StatusListener() {
 			@Override
 			public void onStatus(Status status) {
@@ -184,7 +183,7 @@ public class HomeController {
 
 	}
 
-	@RequestMapping({ "/index", "/" })
+	@RequestMapping({"/index" , "/" })
 	public ModelAndView index(Model model) throws IOException {
 	
 
@@ -192,6 +191,12 @@ public class HomeController {
 		Collections.reverse(list);
 
 		return new ModelAndView("index", "tweetTable", list);
+	}
+	@RequestMapping("/about")
+	public String about(Model model) throws IOException {
+	
+
+		return "about";
 	}
 	@RequestMapping("search")
 	public ModelAndView search(Model model) throws IOException {

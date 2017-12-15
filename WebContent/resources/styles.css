@@ -25,6 +25,16 @@ body {
     background: white;
 }
 
+.megadog {
+    display: flex;
+    flex-direction: column;
+    margin: 10vh auto;
+    border: 1px solid #eee;
+    padding: 25px 25px;
+    border-radius: 15px;
+    background: white;
+}
+
 .person {
     display: flex;
     flex-direction: row;
@@ -87,4 +97,15 @@ img.twaikuLogo {
     color: #999;
     font-size: 0.8em;
     text-transform: uppercase;
+}
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
 }
