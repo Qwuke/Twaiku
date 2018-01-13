@@ -98,14 +98,23 @@ img.twaikuLogo {
     font-size: 0.8em;
     text-transform: uppercase;
 }
+
 .marketing .col-lg-4 {
   margin-bottom: 1.5rem;
   text-align: center;
 }
+
 .marketing h2 {
   font-weight: 400;
 }
+
 .marketing .col-lg-4 p {
   margin-right: .75rem;
   margin-left: .75rem;
+}
+
+@media screen and (max-width: 450px) {
+	body {
+		background-image: url(https://i.pinimg.com/originals/1b/90/b4/1b90b4c77295ae9186f8c7047c9c8d56.jpg);
+	}
 }

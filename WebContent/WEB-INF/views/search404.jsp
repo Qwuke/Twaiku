@@ -56,7 +56,7 @@
 	<div class="tweetColumns">
 		<table class="table">
 			<tbody>	
-				<c:forEach var="myVar" items="${search}">
+				<c:forEach var="myVar" items="${search404}">
 					<tr scope=row>
 						<div id="col1" class="tweet">
 							<div class="person">
@@ -93,10 +93,12 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	
+		
 	</div>
 
 
+	
+	
 </body>
 
 </html>
