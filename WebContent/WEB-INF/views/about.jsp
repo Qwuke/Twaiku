@@ -20,9 +20,9 @@
 
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary"
-		style="height: 50px">
-		<a class="navbar-brand mx-auto" href="#"
-			style="font-family: 'Bungee Shade', cursive; font-size: 1.75em">Twaiku</a>
+		style="height: 50px; min-width:100%">
+		<a class="navbar-brand mx-auto text-center" href="http://twaiku.net"
+			style="font-family: 'Bungee Shade', cursive; font-size: 2.5em">Twaiku</a>
 	</nav>
 	<nav class="navbar navbar-expand-sm py-0 navbar-dark bg-primary">
 		<!-- <a class="navbar-brand" href="#">Twaiku</a>
@@ -52,12 +52,11 @@
       <br>
       <br>
       <h1 class="text-center">About Twaiku</h1>
-      	<div class="container tweet text-center">
+      	<div class="row tweet text-center">
       		<h2 class="text-center">Twaiku is a natural language processing project that identifies accidental haikus from a random sample of the public Twitter stream.</h2>
-      		<h2>It was made by coders who love finding poetry in everyday life.</h2>
       		<h2>If you want to contribute to Twaiku, star us on <a href="https://github.com/Qwuke/Twaiku">Github</a> or follow us on <a href="https://twitter.com/TwaikuGC">Twitter</a> to fuel motivation for development!</h2>
       		<br>
-      		
+      			
       		<h2>Twaiku was made with love by</h2>
       	</div>
         <!-- Three columns of text below -->

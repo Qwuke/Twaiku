@@ -114,6 +114,9 @@ img.twaikuLogo {
 }
 
 @media screen and (max-width: 450px) {
+	.tweet {
+    	min-width: 300px;
+	}
 	body {
 		background-image: url(https://i.pinimg.com/originals/1b/90/b4/1b90b4c77295ae9186f8c7047c9c8d56.jpg);
 	}

@@ -34,13 +34,14 @@ public class tweetSweeper {
 		//Return empty arraylist if contains haikuable words at some point. Otherwise, return sanitized text.
 		ArrayList<String> list = new ArrayList<String>();
 		
-		String[] arry = rawTweetText.replaceAll("’","'" ).split(" ");
-
+		String[] arry = rawTweetText.split(" ");
+		
 		if (rawTweetText.contains("http")) {
 			return list.toArray(new String[list.size()]);
 		}
 		
-		for (String word : rawTweetText.split(("[^a-zA-Z'�@0-9]"))) {
+		for (String word : rawTweetText.split(("[^a-zA-Z'’ʼ�@0-9]"))) {
+			word = word.replaceAll("[’ʼ]", "'");
 			if (!word.equals("")) {
 				list.add(word);
 			}
@@ -64,12 +65,13 @@ public class tweetSweeper {
 			list.clear();
 			return list.toArray(new String[list.size()]);
 		}}
+		/*
 		for(String badWord:badWords) {
 			for(int megadog = 0; megadog<list.size()-1; megadog++) {
 			if (list.get(megadog).equalsIgnoreCase(badWord)) {
 				list.clear();
 				return list.toArray(new String[list.size()]);
-		}}}
+		}}}*/
 		
 		
 		/* Commented out since it cannot handle for numbers larger than ints

@@ -29,6 +29,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -44,7 +45,8 @@ import net.twaiku.util.HibernateUtil;
 
 @Controller
 public class HomeController {
-	public String words = "Green one speckled legs, Hop on logs and 42 Splash in cool water.";
+	//Our mysterious test message
+	public String words = "I’m I'm speckled legs, Hop on logs and 42 Splash in cool water.";
 
 	public int tweetCount;
 	public int postCount;
@@ -76,12 +78,13 @@ public class HomeController {
 		Rhymer rhymer = CmuDictionary.loadRhymer();
 
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-
+		//Initialize api tokens/config
 		configurationBuilder.setTweetModeExtended(true);
 		configurationBuilder.setOAuthConsumerKey(Credentials.CLIENT_ID)
 				.setOAuthConsumerSecret(Credentials.CLIENT_SECRET).setOAuthAccessToken(Credentials.AccessToken_ID)
 				.setOAuthAccessTokenSecret(Credentials.AccessTokenSecret_ID);
 
+		//Start the tweet stream listener
 		TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
 		StatusListener listener = new StatusListener() {
 			@Override
@@ -89,25 +92,40 @@ public class HomeController {
 
 				// System.out.println(status.getUser().getProfileImageURLHttps());
 				// System.out.println(status.getUser().getName());
-
+				
+				//Initial filtering conditional for determining if a tweet is worthwhile enough to check if it is a haiku
 				if (status.getLang().toString().equals("en") && (status.getHashtagEntities().length == 0)
-						&& (status.isRetweet() == false) && status.getInReplyToStatusId() <= 0 && status.getText().length() < 255 && status.getUser().getName()!= "TwaikuGC") {
+						&& (status.isRetweet() == false) && (status.getInReplyToStatusId() <= 0)
+						&& (status.getText().length()) < 255) {
+					
 					tweetCount++;
+					
 					try {
 
 						String[] wordsInTweet = tweetSweeper.sanitizeRawTweet(status.getText());
 						if (wordsInTweet.length > 1) {
+							//Return int array with value for whether or not a tweet is a haiku
 							int[] indexNum = (HaikuDetector.ifHaiku(wordsInTweet, rhymer));
-
+							
+							//If it is a haiku, update the db and post to twitter
 							if (indexNum[0] == 1) {
-								updateTwaikuDatabaseTweets((status.getId()), status.getUser().getScreenName(),
-										regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2], indexNum[3],
-												tweetSweeper.sanitizeRawTweet(status.getText()))),
-										status.getUser().getProfileImageURLHttps(),
-										regexChecker(status.getUser().getName()));
-
-								TwaikuBotController.botTweetPost(status, replaceBreaks(getLastTweet(status.getId())));
-								;
+								if(!status.getUser().getScreenName().equalsIgnoreCase("TwaikuGC")) {
+									updateTwaikuDatabaseTweets(
+											status.getId(), 
+											status.getUser().getScreenName(),
+											//Format sanitized text to haiku that webpage can read
+											regexChecker(HaikuDetector.formatToHaiku(indexNum[1], indexNum[2], indexNum[3],
+											tweetSweeper.sanitizeRawTweet(status.getText()))),
+											
+											status.getUser().getProfileImageURLHttps(),
+											regexChecker(status.getUser().getName())
+									);
+								}
+								//Post to twitter
+								TwaikuBotController.botTweetPost(status, replaceBreaks(getLastTweet(status.getId())) 
+										+ "\n https://twitter.com/" 
+										+ status.getUser().getScreenName() + "/status/" + status.getId()
+								);
 
 								System.out.println("@" + status.getUser().getScreenName() + " Tweet LENGTH : "
 										+ status.getText().length() + " - " + status.getText() + " - GETID:"
@@ -192,9 +210,8 @@ public class HomeController {
 	@RequestMapping({ "/index", "/" })
 	public ModelAndView index(Model model) throws IOException {
 
-		ArrayList<TwaikuDTO> list = getAllTweets();
-		// Collections.reverse(list);
-
+		ArrayList<TwaikuDTO> list = getLastNTweets(1500);
+		
 		return new ModelAndView("index", "tweetTable", list);
 	}
 
@@ -252,17 +269,31 @@ public class HomeController {
 		session.close();
 		return list;
 	}
+	
+	private ArrayList<TwaikuDTO> getLastNTweets(int n) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(TwaikuDTO.class);
+		crit.addOrder(Order.desc("TweetID"));
+	    crit.setMaxResults(n);
+
+		ArrayList<TwaikuDTO> list = (ArrayList<TwaikuDTO>) crit.list();
+		tx.commit();
+		session.close();
+		
+		return list;
+	}
 
 	private ArrayList<TwaikuDTO> getAllTweets() {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
 		Criteria crit = session.createCriteria(TwaikuDTO.class);
-
+		crit.addOrder(Order.desc("TweetID"));
 		ArrayList<TwaikuDTO> list = (ArrayList<TwaikuDTO>) crit.list();
-		Collections.reverse(list);
 
 		ArrayList<TwaikuDTO> trueList = new ArrayList<TwaikuDTO>();
+		
 		for (int i = 0; i <= 14; i++)
 			trueList.add(i, list.get(i));
 		tx.commit();
